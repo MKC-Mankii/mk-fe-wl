@@ -1,0 +1,8 @@
+CREATE TABLE IF NOT EXISTS demo (
+  id INTEGER PRIMARY KEY,
+  message TEXT NOT NULL
+);
+
+INSERT INTO demo (id, message)
+VALUES (1, 'Hello from D1!')
+ON CONFLICT (id) DO NOTHING;

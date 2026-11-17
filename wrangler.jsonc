@@ -1,0 +1,19 @@
+{
+  "$schema": "./node_modules/wrangler/config-schema.json",
+  "name": "mk-fe-wl-web",
+  "main": "./src/index.js",
+  "compatibility_date": "2026-11-01",
+  "send_metrics": false,
+  "assets": {
+    "directory": "./public",
+    "binding": "ASSETS",
+    "run_worker_first": ["/api/*"]
+  },
+  "d1_databases": [
+    {
+      "binding": "DB",
+      "database_name": "mk-fe-wl-db",
+      "database_id": "8cc40b36-fa53-4418-85a4-2031408ecb11"
+    }
+  ]
+}

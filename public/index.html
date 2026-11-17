@@ -1,0 +1,51 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Hello World</title>
+    <style>
+      body { margin: 0; padding: 2rem 1rem; font: 1rem/1.5 system-ui, sans-serif; }
+      main { max-width: 36rem; margin: auto; }
+      dt { font-weight: bold; }
+      dd { margin: 0 0 0.75rem; overflow-wrap: anywhere; white-space: pre-wrap; }
+      .error { color: #a01818; }
+    </style>
+  </head>
+  <body>
+    <main>
+      <h1 lang="en">Hello World</h1>
+      <p id="status" role="status"></p>
+      <dl id="record" hidden>
+        <dt>id</dt>
+        <dd id="record-id"></dd>
+        <dt>message</dt>
+        <dd id="record-message"></dd>
+      </dl>
+      <noscript><p class="error">查询失败：请启用 JavaScript。</p></noscript>
+    </main>
+    <script type="module">
+      const status = document.getElementById("status");
+      status.textContent = "正在查询 D1…";
+
+      try {
+        const response = await fetch("/api/hello");
+        if (response.status === 404) throw new Error("未找到 id 为 1 的记录。");
+        if (!response.ok) throw new Error(`服务器返回 HTTP ${response.status}。`);
+
+        const row = await response.json();
+        if (row?.id !== 1 || typeof row.message !== "string") {
+          throw new Error("API 未返回有效记录。");
+        }
+
+        document.getElementById("record-id").textContent = String(row.id);
+        document.getElementById("record-message").textContent = row.message;
+        document.getElementById("record").hidden = false;
+        status.textContent = "已读取 D1 记录。";
+      } catch (error) {
+        status.textContent = `查询失败：${error instanceof Error ? error.message : "请求异常。"}`;
+        status.classList.add("error");
+      }
+    </script>
+  </body>
+</html>
